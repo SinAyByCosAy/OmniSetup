@@ -8,7 +8,7 @@ brew-add() {
     validate_flags "$@" || return 1
 
     brew install "$tool" || return 1
-    add-tool.sh "$tool" "$@"
+    add-tool "$tool" "$@"
 }
 cask-add() {
     local tool="$1"
@@ -17,7 +17,7 @@ cask-add() {
     validate_flags "$@" || return 1
 
     brew install --cask "$tool" || return 1
-    add-tool.sh "$tool" --gui "$@"
+    add-tool "$tool" --gui "$@"
 }
 apt-add() {
     local tool="$1"
@@ -26,7 +26,7 @@ apt-add() {
     validate_flags "$@" || return 1
 
     sudo apt install -y "$tool" || return 1
-    add-tool.sh "$tool" "$@"
+    add-tool "$tool" "$@"
 }
 npm-add() {
     echo "$SCRIPT_DIR/validations.sh"
@@ -36,5 +36,5 @@ npm-add() {
     validate_flags "$@" || return 1
 
     npm install -g "$tool" || return 1
-    add-tool.sh "$tool" --npm
+    add-tool "$tool" --npm
 }
