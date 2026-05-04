@@ -48,4 +48,5 @@ fi
 # Reload shell config
 source "$SHELL_RC"
 
+echo "[INFO] Config file: ~/.setup-config (auto-created on first use)"
 echo "[INFO] Setup complete. Restart terminal or run: source $SHELL_RC"
