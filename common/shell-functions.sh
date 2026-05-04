@@ -38,3 +38,16 @@ npm-add() {
     npm install -g "$tool" || return 1
     add-tool "$tool" --npm
 }
+setup-config() {
+    cat "$HOME/.setup-config"
+}
+setup-push-on() {
+    sed -i '' '/^AUTO_PUSH=/d' "$HOME/.setup-config" 2>/dev/null
+    echo "AUTO_PUSH=true" >> "$HOME/.setup-config"
+    echo "[INFO] Auto push enabled"
+}
+setup-push-off() {
+    sed -i '' '/^AUTO_PUSH=/d' "$HOME/.setup-config" 2>/dev/null
+    echo "AUTO_PUSH=false" >> "$HOME/.setup-config"
+    echo "[INFO] Auto push disabled"
+}
