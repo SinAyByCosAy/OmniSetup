@@ -157,7 +157,7 @@ if command -v git &> /dev/null; then
                 git -C "$REPO_DIR" push -u origin "$CURRENT_BRANCH"
             fi
         else
-            echo "[INFO] Skipping git push (--no-push)"
+            echo "[INFO] Skipping git push"
         fi
     else
         echo "[INFO] No changes to commit"
