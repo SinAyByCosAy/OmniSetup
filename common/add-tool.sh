@@ -120,20 +120,26 @@ fi
 
 # Git auto-commit + push
 if command -v git &> /dev/null; then
+    # Ensure repo exists
+    if [ ! -d "$REPO_DIR/.git" ]; then
+        echo "[INFO] Not a git repository, skipping git operations"
+        exit 0
+    fi
+
     git -C "$REPO_DIR" add .
 
-    # commit only if there are changes
-    if ! git diff --cached --quiet; then
+    if ! git -C "$REPO_DIR" diff --cached --quiet; then
         if $IS_NPM; then
             COMMIT_MSG="Add npm tool: $TOOL"
         else
             COMMIT_MSG="Add tool: $TOOL"
         fi
+
         git -C "$REPO_DIR" commit -m "$COMMIT_MSG"
-        
-        # push (only if branch has upstream)
+
         if ! $NO_PUSH; then
-            CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+            CURRENT_BRANCH="$(git -C "$REPO_DIR" rev-parse --abbrev-ref HEAD)"
+
             if git -C "$REPO_DIR" rev-parse --abbrev-ref --symbolic-full-name "@{u}" &>/dev/null; then
                 git -C "$REPO_DIR" push
             else
