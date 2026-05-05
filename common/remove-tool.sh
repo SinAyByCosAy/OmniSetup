@@ -55,3 +55,14 @@ if ! $IS_NPM && ! $IS_GUI && ! $IS_COMMON && ! IS_LOCAL; then
     IS_LOCAL=true
 fi
 
+remove_from_file() {
+    FILE="$1"
+    [ -f "$FILE" ] || return
+    
+    if grep -qxF "$TOOL" "$FILE"; then
+        grep -vxF "$TOOL" "$FILE" > "$FILE.tmp" && mv "$FILE.tmp" "$FILE"
+        echo "[INFO] Removed '$TOOL' from $FILE"
+    else
+        echo "[INFO] '$TOOL' not found in $FILE"
+    fi
+}
