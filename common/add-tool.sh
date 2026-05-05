@@ -130,10 +130,17 @@ else
 fi
 
 # Git auto-commit + push
-if command -v git &> /dev/null; then
-    # Ensure repo exists
-    if [ ! -d "$REPO_DIR/.git" ]; then
-        echo "[INFO] Not a git repository, skipping git operations"
+if command -v git &> /dev/null && [ -d "$REPO_DIR/.git" ]; then
+
+    # check git config
+    GIT_NAME=$(git -C "$REPO_DIR" config user.name || true)
+    GIT_EMAIL=$(git -C "$REPO_DIR" config user.email || true)
+
+    if [ -z "$GIT_NAME" ] || [ -z "$GIT_EMAIL" ]; then
+        echo "[WARN] Git not configured. Skipping commit."
+        echo "Run:"
+        echo " git config --global user.name \"Your Name\""
+        echo " git config --global user.email \"you@example.com\""
         exit 0
     fi
 
