@@ -111,3 +111,20 @@ if [[ "$OS" == "Darwin" ]]; then
 else
     sudo apt remove -y "$TOOL" || true
 fi
+
+# Git
+if command -v git &> /dev/null && [ -d "$REPO_DIR/.git" ]; then
+    git -C "$REPO_DIR" add .
+
+    if ! git -C "$REPO_DIR" diff --cached --quiet; then
+        git -C "$REPO_DIR" commit -m "Remove tool: $TOOL"
+
+        CONFIG_FILE="$HOME/.setup-config"
+        AUTO_PUSH=true
+        [ -f "$CONFIG_FILE" ] && source "$CONFIG_FILE"
+
+        if $AUTO_PUSH; then
+            git -C "$REPO_DIR" push || true
+        fi
+    fi
+fi
