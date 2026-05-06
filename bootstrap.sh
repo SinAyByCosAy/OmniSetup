@@ -40,17 +40,23 @@ SHELL_RC="$HOME/.zshrc"
 BLOCK_START="# >>> setup-tools >>>"
 BLOCK_END="# <<< setup-tools <<<"
 
-if ! grep -q "$BLOCK_START" "$SHELL_RC"; then
-    {
-        echo ""
-        echo "$BLOCK_START"
-        echo "source \"$REPO_DIR/common/shell-functions.sh\""
-        echo "$BLOCK_END"
-    } >> "$SHELL_RC"
+# ensure rc file exists
+touch "$SHELL_RC"
+
+# Remove existing block (cross-platform)
+if [[ "$OS" == "Darwin" ]]; then
+    sed -i '' "/$BLOCK_START/,/$BLOCK_END/d" "$SHELL_RC" 2>/dev/null || true
+else
+    sed -i "/$BLOCK_START/,/$BLOCK_END/d" "$SHELL_RC" 2>/dev/null || true
 fi
 
-# Reload shell config
-source "$SHELL_RC"
+# Add fresh block 
+{
+    echo ""
+    echo "$BLOCK_START"
+    echo "source \"$REPO_DIR/common/shell-functions.sh\""
+    echo "$BLOCK_END"
+} >> "$SHELL_RC"
 
 echo "[INFO] Config file: ~/.setup-config (auto-created on first use)"
 echo "[INFO] Setup complete. Restart terminal or run: source $SHELL_RC"

@@ -67,8 +67,6 @@ remove_from_file() {
         grep -vxF "$TOOL" "$FILE" > "$FILE.tmp" && mv "$FILE.tmp" "$FILE"
         echo "[INFO] Removed '$TOOL' from $FILE"
         REMOVED=true
-    else
-        echo "[INFO] '$TOOL' not found in $FILE"
     fi
 }
 
@@ -104,9 +102,9 @@ fi
 
 if [[ "$OS" == "Darwin" ]]; then
     if $IS_GUI; then
-        brew uninstall --cask "$TOOL" || true
+        brew list --cask "$TOOL" &>/dev/null && brew uninstall --cask "$TOOL" || true
     else
-        brew uninstall "$TOOL" || true
+        brew list "$TOOL" &>/dev/null && brew uninstall "$TOOL" || true
     fi
 else
     sudo apt remove -y "$TOOL" || true

@@ -1,4 +1,12 @@
-SCRIPT_DIR="${0:A:h}"
+if [ -n "$BASH_SOURCE" ]; then
+  SCRIPT_PATH="${BASH_SOURCE[0]}"
+elif [ -n "$ZSH_VERSION" ]; then
+  SCRIPT_PATH="${(%):-%x}"
+else
+  SCRIPT_PATH="$0"
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
 source "$SCRIPT_DIR/validations.sh"
 
 brew-add() {
