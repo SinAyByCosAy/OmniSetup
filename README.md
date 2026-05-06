@@ -1,34 +1,15 @@
-## For macOS
+# 🧰 OmniSetup: Declarative System Bootstrapper
 
-Need to install homebrew(package manager)
+OmniSetup is a lightweight, cross-platform (macOS and Linux) utility designed to bootstrap fresh machines and automatically track your installed tools in version-controlled text files. 
 
-```console
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+## 🎯 Who is it for?
+This tool is built for developers who frequently switch between macOS and Linux machines and want a reproducible environment without the overhead of heavy infrastructure tools like Ansible or Nix. It replaces manual installation steps with a streamlined, self-documenting workflow.
 
-If the brew command is not found, put brew in the zshrc path.
-
-```console
-echo "export PATH=/opt/homebrew/bin:$PATH" >> ~/.zshrc
-```
-
-Clone the repo or download the files<br>
-<ol>
-  <li>
-    mac-applications.txt → for GUI applications (casks)
-  </li>
-  <li>
-    mac-formulas.txt → for CLI tools (formulas)
-  </li>
-</ol>
-Go to the location of the files and run :
-
-```console
-xargs brew install --cask < mac-applications.txt
-```
-
-```console
-xargs brew install < mac-formulas.txt
-```
-
-This will read all the list of applications from the file and pass them as arguments using the xargs utility.
+## 🚀 First-Time Setup
+To set up a fresh machine, clone the repository and run the bootstrap script.
+```bash
+git clone [https://github.com/SinAyByCosAy/system-setup.git](https://github.com/SinAyByCosAy/system-setup.git) ~/system-setup
+cd ~/system-setup
+chmod +x bootstrap.sh
+./bootstrap.sh
+source ~/.zshrc
