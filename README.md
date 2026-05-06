@@ -8,8 +8,8 @@ This tool is built for developers who frequently switch between macOS and Linux 
 ## 🚀 First-Time Setup
 To set up a fresh machine, clone the repository and run the bootstrap script.
 ```bash
-git clone [https://github.com/SinAyByCosAy/system-setup.git](https://github.com/SinAyByCosAy/system-setup.git) ~/system-setup
-cd ~/system-setup
+git clone https://github.com/SinAyByCosAy/OmniSetup.git ~/OmniSetup
+cd ~/OmniSetup
 chmod +x bootstrap.sh
 ./bootstrap.sh
 source ~/.zshrc
