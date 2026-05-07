@@ -164,10 +164,8 @@ setup-push-off  # Disables the auto-push behavior
 
 ## 🔧 Troubleshooting & Edge Cases
 - Repo Moved: If you move the cloned repository to a new directory, your global symlinks will break. 
-<br>Update them manually by running:
-```bash
-sudo ln -sf "<new-path>/common/add-tool.sh" /usr/local/bin/add-tool<br>
-sudo ln -sf "<new-path>/common/remove-tool.sh" /usr/local/bin/remove-tool
-```
-- Git Commit Errors: Ensure your git user is configured (git config --global user.name "...")[cite: 1]. The tool will gracefully skip commits if git is not authenticated.
-- Command Not Found: If wrappers like brew-add aren't recognized, run source ~/.zshrc (or .bashrc) to reload your injected shell functions[cite: 1].
+<br>Update them manually by running:<br>
+`sudo ln -sf "<new-path>/common/add-tool.sh" /usr/local/bin/add-tool`<br>
+`sudo ln -sf "<new-path>/common/remove-tool.sh" /usr/local/bin/remove-tool`
+- Git Commit Errors: Ensure your git user is configured `(git config --global user.name "...")`. The tool will gracefully skip commits if git is not authenticated.
+- Command Not Found: If wrappers like brew-add aren't recognized, run source `~/.zshrc` (or `.bashrc`) to reload your injected shell functions.
