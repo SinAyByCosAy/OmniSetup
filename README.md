@@ -43,6 +43,12 @@ Instead of manually commanding: install this -> configure this -> add to PATH <b
 You declare: "These are the tools and configurations my environment should contain." and the bootstrapper reconstructs it. <br>
 <b>Source of truth: Tracked files</b>
 
+## ⚡ Daily Usage: Installing & Tracking
+
+Because OmniSetup uses global symlinks and dynamic path resolution, **you can run these commands from anywhere on your system.** You do not need to be inside the `~/OmniSetup` directory to install or track packages.
+
+OmniSetup operates on a philosophy of explicit intent. You use wrapper commands to install tools, and pass flags to declare how they should be tracked.
+
 ## 🛠️ Commands & Flags Guide
 
 OmniSetup abstracts away the underlying OS package managers by using standard wrapper commands combined with tracking flags. 
@@ -86,17 +92,59 @@ brew-add jq --common
 # Cross-OS GUI application
 cask-add google-chrome --common
 ```
+#### Case B: Tracking an OS-Specific Tool
+Use --local when a tool is only relevant to your Mac (like a Mac-specific utility) or your Linux box.
+```bash
+# Installed and tracked ONLY for macOS
+brew-add rectangle --local
+
+# Installed and tracked ONLY for Linux
+apt-add systemd-ui --local
+```
+#### Case C: Handling Different Package Names Across OSs
+Sometimes a package is named differently in brew vs apt. You can install it on Mac while simultaneously defining what the Linux machine should look for.
+```bash
+# Installs 'docker' via brew, but tells Linux to use 'docker.io'
+brew-add docker --common --linux-name docker.io
+```
+#### Case D: Global Node/NPM Packages
+NPM packages are inherently cross-platform.
+```bash
+# Installs 'typescript' globally and adds to npm-global.txt
+npm-add typescript --npm
+```
+#### Case E: Temporary Install (No Tracking)
+If you omit tracking flags, the wrapper will simply install the tool using the underlying package manager, but it will not write it to any text file or trigger a git commit.
+```bash
+# Installs to your system for temporary use, no tracking
+brew-add nmap
+```
+#### Case F: Retroactive Tracking
+If you installed something manually (e.g., brew install tree) and later decide you want OmniSetup to track it, use add-tool.
+```bash
+# Does not attempt to install, just adds to the common tracking list
+add-tool tree --common
+```
+#### Case G: Uninstalling and Untracking
+The removal tool automatically handles the uninstallation and purges the tool from whichever list it was being tracked in.
+```bash
+# Removes 'express' from the system and npm-global.txt
+tool-rm express
+# Scoped removal (removes only from the specified list)
+tool-rm vlc --gui
+```
 
 ## ⚙️ Configuration & Git Behavior
 
 OmniSetup automatically commits file changes to your local Git repository when you track or untrack a tool. 
 
-**Auto-Creation & Defaults**
+**Auto-Creation & Defaults** <br>
 You do not need to manually create any configuration files. The tool manages its own state at `~/.setup-config`.
 
-> **⚠️ Note: Auto-Push is ENABLED by default.** > Out of the box, OmniSetup will automatically run `git push` to sync your changes to your remote repository (`AUTO_PUSH=true`). 
+> **⚠️ Note: Auto-Push is ENABLED by default.** <br>
+> Out of the box, OmniSetup will automatically run `git push` to sync your changes to your remote repository (`AUTO_PUSH=true`). 
 
-**Disabling Auto-Push Before First Use**
+**Disabling Auto-Push Before First Use** <br>
 If you want to disable automatic pushing *before* you run your very first installation command, you must initialize the config file first. Run these two commands:
 
 ```bash
@@ -113,3 +161,10 @@ setup-push-off  # Disables the auto-push behavior
 | `setup-push-on` | Re-enables automatic Git pushing (`AUTO_PUSH=true`). |
 
 *(Tip: You can always override your global auto-push setting for a single command by passing the `--no-push` flag, e.g., `brew-add nmap --common --no-push`).*
+
+## 🔧 Troubleshooting & Edge Cases
+- Repo Moved: If you move the cloned repository to a new directory, your global symlinks will break[cite: 1]. Update them manually by running:
+sudo ln -sf "<new-path>/common/add-tool.sh" /usr/local/bin/add-tool
+sudo ln -sf "<new-path>/common/remove-tool.sh" /usr/local/bin/remove-tool
+- Git Commit Errors: Ensure your git user is configured (git config --global user.name "...")[cite: 1]. The tool will gracefully skip commits if git is not authenticated.
+- Command Not Found: If wrappers like brew-add aren't recognized, run source ~/.zshrc (or .bashrc) to reload your injected shell functions[cite: 1].
