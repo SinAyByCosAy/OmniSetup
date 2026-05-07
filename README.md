@@ -25,9 +25,9 @@ source ~/.zshrc
 
 ### Files being tracked:
 <ul>
-    <li>Common(MacOS and Linux): <a href="https://github.com/SinAyByCosAy/OmniSetup/blob/master/npm-global.txt">npm-global.txt</a>, [common-cli.txt](./common/common-cli.txt)!, [common-gui.txt](./common/common-gui.txt)!</li>
-    <li>Mac Only: [mac-applications.txt](./mac/brew.sh)!, [mac-formulas.txt](./mac/mac-formulas.txt)!</li>
-    <li>Linux Only: [linux-packages.txt](./linux/linux-packages.txt)!</li>
+    <li>Common(MacOS and Linux): <a href="https://github.com/SinAyByCosAy/OmniSetup/blob/master/npm-global.txt">npm-global.txt</a>, <a href="https://github.com/SinAyByCosAy/OmniSetup/blob/master/common/common-cli.txt">common-cli.txt</a>, <a href="https://github.com/SinAyByCosAy/OmniSetup/blob/master/common/common-gui.txt">common-gui.txt</a></li>
+    <li>Mac Only: <a href="https://github.com/SinAyByCosAy/OmniSetup/blob/master/mac/mac-applications.txt">mac-applications.txt</a>, <a href="https://github.com/SinAyByCosAy/OmniSetup/blob/master/mac/mac-formulas.txt">mac-formulas.txt</a></li>
+    <li>Linux Only: <a href="https://github.com/SinAyByCosAy/OmniSetup/blob/master/linux/linux-packages.txt">linux-packages.txt</a></li>
 </ul>
 
 This is a <b>Declarative System Bootstrapper</b> where: you describe the desired environment state
