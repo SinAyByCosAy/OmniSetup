@@ -58,8 +58,7 @@ These commands determine *how* a package is installed or removed on your current
 
 | Command | Action |
 | :--- | :--- |
-| `brew-add <tool>` | Installs a package via Homebrew (macOS). Dynamically uses `--cask` if the `--gui` flag is passed. |
-| `apt-add <tool>` | Installs a package via `apt` (Linux). |
+| `omni-add <tool>` | **The Universal Installer.** Automatically detects your OS. Uses `brew` (or `brew --cask` with `--gui`) on Mac, and `apt` on Linux. |
 | `npm-add <tool>` | Installs a Node.js package globally via `npm` (Cross-OS). |
 | `add-tool <tool>` | Tracks a tool that is **already installed** on your system (skips installation). |
 | `tool-rm <tool>`<br>*(or `remove-tool`)* | Uninstalls the package from the system and removes it from all tracked lists. |
@@ -73,12 +72,21 @@ Flags tell OmniSetup *where* to record the tool in your Git repository so it can
 | `--local` | Tracks the tool **only** for the current OS. | `mac/mac-cli.txt` (or `-gui.txt`) |
 | `--gui` | Classifies the tool as a GUI app. On Mac, it forces a Cask install. | Targets `-gui.txt` files. |
 | `--npm` | Tracks as an NPM package. | `npm-global.txt` |
-| `--linux-name <name>` | Maps a different package name for Linux `apt` installs. | Appended inline (e.g., `docker & docker.io`) |
+| `--linux-name <name>` | Maps a different package name for Linux `apt` installs. | Puts linux specific name in `linux-packages.txt` |
 | `--no-push` | Skips pushing the Git commit to the remote repo. | *None* |
+
+### 3. Flag Combinations & Clarifications
+Tracking requires **explicit intent**. How you combine flags determines exactly how the tool is recorded:
+
+* `--common` (alone) ➔ **Common CLI** tracking
+* `--common --gui` ➔ **Common GUI** tracking
+* `--local` (alone) ➔ **Local CLI** tracking
+* `--local --gui` ➔ **Local GUI** tracking
+* *(No flags)* ➔ **No tracking** (Installation only)
 
 ---
 
-### 3. Usage Guide: Putting it Together (All Cases)
+### 4. Usage Guide: Putting it Together (All Cases)
 
 Here is how you combine commands and flags for any scenario.
 
@@ -86,27 +94,28 @@ Here is how you combine commands and flags for any scenario.
 Use `--common` when you want this tool available on every machine you set up.
 ```bash
 # Cross-OS CLI tool
-brew-add jq --common
+omni-add jq --common
 
 # Cross-OS GUI application
-brew-add google-chrome --common --gui
+omni-add google-chrome --common --gui
 ```
 
 #### Case B: Tracking an OS-Specific Tool
 Use `--local` when a tool is only relevant to your Mac (like a Mac-specific utility) or your Linux box.
 ```bash
 # Installed and tracked ONLY for macOS
-brew-add rectangle --local --gui
+omni-add rectangle --local --gui
 
 # Installed and tracked ONLY for Linux
-apt-add systemd-ui --local
+omni-add systemd-ui --local
 ```
 
 #### Case C: Handling Different Package Names Across OSs
-Sometimes a package is named differently in `brew` vs `apt`. You can install it on Mac while simultaneously defining what the Linux machine should look for.
+Sometimes a package is named differently in `brew` vs `apt`. The `--linux-name` flag bridges this gap by interpreting the intent based on the active OS.
 ```bash
-# Installs 'docker' via brew, but tells Linux to use 'docker.io'
-brew-add docker --common --linux-name docker.io
+# On macOS: Installs 'docker' via brew, records 'docker' for MacOS and 'docker.io' for Linux tracking.
+# On Linux: Reads the flag and installs 'docker.io' via apt.
+omni-add docker --common --linux-name docker.io
 ```
 
 #### Case D: Global Node/NPM Packages
@@ -120,10 +129,10 @@ npm-add typescript --npm
 If you omit tracking flags, the wrapper will simply install the tool using the underlying package manager, but it will **not** write it to any text file or trigger a git commit.
 ```bash
 # Installs a CLI tool temporarily
-brew-add nmap
+omni-add nmap
 
 # Installs a GUI tool temporarily (requires --gui for macOS cask logic)
-brew-add spotify --gui
+omni-add spotify --gui
 
 # Installs an NPM package temporarily
 npm-add express
@@ -137,10 +146,16 @@ add-tool tree --common
 ```
 
 #### Case G: Uninstalling and Untracking
-The removal tool automatically handles the uninstallation and purges the tool from whichever list it was being tracked in.
+The removal tool automatically handles the uninstallation and purges the tool from your tracked state. You can use it universally, or scope it with flags to specify which list it should be removed from.
 ```bash
-# Removes 'typescript' from the system and npm-global.txt
-tool-rm typescript
+# Universal Removal: Removes the tool from the system and ALL tracked lists
+tool-rm express
+
+# Scoped Removal: Removes the tool from the system and ONLY the NPM list
+tool-rm typescript --npm
+
+# Scoped Removal: Removes the GUI app and untracks it from the GUI list
+tool-rm vlc --gui
 ```
 
 **⚠️ Important Exceptions:**
