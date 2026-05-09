@@ -1,1 +1,2 @@
 mysql-workbench-community
+mysql-server
