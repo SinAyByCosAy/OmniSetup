@@ -215,3 +215,26 @@ setup-push-off  # Disables the auto-push behavior
 `sudo ln -sf "<new-path>/common/remove-tool.sh" /usr/local/bin/remove-tool`
 - Git Commit Errors: Ensure your git user is configured `(git config --global user.name "...")`. The tool will gracefully skip commits if git is not authenticated.
 - Command Not Found: If wrappers like `brew-add` aren't recognized, run source `~/.zshrc` (or `.bashrc`) to reload your injected shell functions.
+
+---
+
+## 🚀 Future Roadmap
+
+This project is stable and handles declarative package reproducibility perfectly. However, the next evolutionary step is transforming it from a package orchestrator into a full **provisioning framework**.
+
+#### Planned Feature: Modular Installers (The `installers/` Directory)
+
+Currently, OmniSetup abstracts OS-level package managers (`brew`, `apt`). But what happens when an application doesn't live in a standard repository? 
+
+Applications like **Docker**, **VS Code**, and **Google Chrome** often require multi-step provisioning on Linux (e.g., adding GPG keys or modifying `apt` sources lists). To guarantee 100% environment reproducibility for these complex tools without polluting the core `omni-add` script, the next major update will introduce **Modular Installers**.
+
+**How it will work:**
+If a tool requires special provisioning, a dedicated script will be placed in an `installers/` directory. When you run `omni-add vscode`, the system will intercept the request:
+
+1.  **Check Registry:** Does `installers/vscode.sh` exist?
+2.  **Modular Execution:** If yes, execute the specific provisioning logic.
+3.  **Fallback:** If no, fallback to the standard generic `apt` or `brew` install.
+
+This architecture mirrors mature orchestration systems (like Terraform Providers or Ansible Modules), ensuring the core engine remains clean while supporting infinitely complex, heterogeneous software installations.
+
+---
