@@ -2,3 +2,4 @@ visual-studio-code
 raycast
 alt-tab
 postman
+intellij-idea
