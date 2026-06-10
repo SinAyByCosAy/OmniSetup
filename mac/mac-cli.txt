@@ -1,3 +1,4 @@
 mysqlworkbench
 mysql
 colima
+awscli
