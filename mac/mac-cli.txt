@@ -2,3 +2,4 @@ mysqlworkbench
 mysql
 colima
 awscli
+grafana
