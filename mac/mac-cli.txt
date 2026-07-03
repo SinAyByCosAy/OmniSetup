@@ -3,3 +3,4 @@ mysql
 colima
 awscli
 grafana
+kubectl
