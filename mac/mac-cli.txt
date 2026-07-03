@@ -4,3 +4,4 @@ colima
 awscli
 grafana
 kubectl
+minikube
