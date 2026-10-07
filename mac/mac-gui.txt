@@ -3,3 +3,4 @@ raycast
 alt-tab
 postman
 intellij-idea
+pycharm-ce
